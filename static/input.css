@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+
+
+@theme {
+    --inset-shadow-underline: inset 0 -2px 0 0;
+}
+
+@layer components {
+    .button {
+        @apply font-medium px-4 py-2 rounded-md;
+    }
+
+    .primary {
+        @apply shadow-sm border border-emerald-700 text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500;
+    }
+
+    .secondary {
+        @apply border border-gray-300 text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-gray-500;
+    }
+
+    .danger {
+        @apply shadow-sm border border-red-400 text-red-800 bg-red-200 hover:bg-red-200 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-red-200;
+    }
+}
+
+.title {
+    @apply text-6xl font-semibold tracking-tight;
+}
+
+.subtitle {
+    @apply text-4xl font-medium tracking-tight;
+}
+
+.EasyMDEContainer, textarea {
+    @apply rounded-md border-gray-200 border-2 text-base leading-6;
+}
+
+.EasyMDEContainer .CodeMirror {
+    @apply !border-none !bg-inherit;
+}
+
+.EasyMDEContainer:has(textarea:focus), textarea:focus {
+    @apply ring-1 ring-emerald-500 border-emerald-500 outline-none;
+}
+
+.form-field input {
+    @apply w-full rounded-md p-2;
+}
+
+.error, .destructive {
+    @apply p-2 my-2 text-sm text-red-700 bg-red-50 rounded-md border-red-300 border;
+}
+
+input[type="radio"] {
+    @apply text-emerald-600 ml-1 h-4 w-4 focus:ring-emerald-500;
+}
+
+.allauth-form input[type="email"] {
+     @apply block w-full rounded-md p-2 bg-white text-black shadow-sm border border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500;
+}
+
+.allauth-form p:has(input[type="email"]) {
+    @apply text-left;
+}
+
+.allauth-form p:has(input[type="email"]) label {
+    @apply font-bold;
+}
+
+.article-status-draft {
+    @apply bg-gray-200;
+}
+
+.article-status-published {
+    @apply bg-green-200;
+}
+
+.article-status-inprogress {
+    @apply bg-amber-200;
+}

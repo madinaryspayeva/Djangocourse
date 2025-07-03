@@ -1,0 +1,79 @@
+{% extends "base.html" %} 
+
+{% load humanize i18n %} 
+
+{% block base_content %}
+
+<main class="max-w-7xl mx-auto mt-10 p-2 md:p-4 lg:p-10">
+<h1 class="title mb-4">Welcome</h1>
+
+<p class="text-xl mb-4">
+  You have created {{ user.article_count|intcomma }} article{{user.article_count|pluralize }} and written {{ user.written_words|intcomma }}
+  word{{ user.written_words|pluralize }}.
+</p>
+
+<a
+  class="button primary inline-block mb-6 w-full sm:w-auto text-center"
+  href="{% url 'create_article' %}">Start new article</a>
+
+<h2 class="subtitle mb-6">Your latest articles</h2>
+
+<form method="GET" class="flex flex-col sm:flex-row gap-3 form-field">
+<input 
+    class="text-black shadow-sm focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm border-gray-300 rounded-md" 
+    type="search" name="search" placeholder="Search articles" value="{{ request.GET.search }}"
+    hx-get="{{ request.path }}"
+    hx-trigger="input changed delay:500ms, search"
+    hx-target="#article-results"
+    hx-select="#article-results"
+    hx-indicator="svg.loading"
+    hx-disabled-elt="next button"
+    hx-push-url="true">
+
+<button class="flex gap-1 button secondary items-center justify-center [&>.loading.htmx-request.hidden]:!inline-block [&>.loading.htmx-request]:hidden disabled:cursor-not-allowed disabled:opacity-50" type="submit">
+{% include "svgs/magnifier.svg" with class="loading w-6 h-6 mr-2" %}
+{% include "svgs/loading.svg" with class="loading w-6 h-6 mr-2 hidden motion-safe:animate-spin" %}
+Search
+</button>
+<a href="{% url 'home' %}" class="button secondary text-center">Clear search</a>
+</form>
+
+<div id="article-results">
+{% if articles %}
+<ul>
+  {% for article in articles %}
+  <li>
+    <a class="text-2xl flex items-center"
+     href="{% url 'update_article' article.id %}">
+     {{ article.title }}
+     <span class="ml-2 px-4 py-0.5 text-xs rounded-sm uppercase article-status-{{article.status}}">{{ article.status }}</span>
+     </a>
+     <p class="text-sm">{{ article.word_counter}} word{{ article.word_counter|pluralize}}.</p>
+  </li>
+  {% endfor %}
+</ul>
+{% if is_paginated %}
+<div class="flex flex-row items-center justify-center text-xl mt-6">
+  {% if page_obj.has_previous %}
+      <a class="mx-2" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+          {% include "svgs/chevron.svg" with class="h-7 w-7 rotate-180 border border-black rounded-md p-1" %}
+      </a>
+  {% endif %}
+
+  <span>Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
+
+   {% if page_obj.has_next %}
+      <a class="mx-2" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+        {% include "svgs/chevron.svg" with class="h-7 w-7 border border-black rounded-md p-1"%}
+      </a>
+   {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<p>You have no articles yet</p>
+{% endif %}
+</div>
+</main>
+
+{% endblock base_content %}
